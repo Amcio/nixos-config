@@ -1,0 +1,160 @@
+/* possibly export this to another file */
+@define-color background rgba(0, 0, 0, 0.4);
+@define-color bg-module rgba(0, 0, 0, 0.0);
+@define-color bg-tray rgba(0, 0, 0, 0.2);
+
+@define-color foreground rgba(30, 180, 255, 1.0);
+@define-color fg-module rgba(245, 250, 255, 1.0);
+@define-color fg-alt rgba(0, 0, 0, 1.0);
+@define-color fg-blink rgba(190, 240, 255, 1.0);
+@define-color fg-persist rgba(135, 145, 165, 1.0);
+
+@define-color border rgba(0, 175, 250, 1);
+@define-color border-module rgba(0, 175, 248, 1.0);
+@define-color border-alt rgba(2, 10, 20, 1.0);
+
+@define-color separator rgba(56, 70, 84, 1.0);
+
+* {
+    font-family: "BlexMono Nerd Font";
+    font-size: 12.25px;
+    min-height: 15px;
+    padding: 1 3px;
+    font-weight: bold;
+}
+
+
+window#waybar {
+    background: @background;
+    border: 1px solid @border;
+    border-radius: 13;
+}
+
+#window {}
+
+#workspaces {}
+
+#workspaces button {
+    margin: 0 1px;
+    padding: 0 2px;
+    color: @fg-module;
+}
+
+#workspaces button:hover {
+    background: transparent;
+}
+
+#workspaces button.focused {
+    border-top: 2px solid transparent;
+}
+
+#workspaces button.active {
+    color: @foreground;
+}
+
+#mode {
+    background: #64727D;
+    border-bottom: 3px solid white;
+}
+
+#custom-bandwidth,
+#custom-notification,
+#custom-update,
+#custom-logo,
+#idle_inhibitor,
+#window,
+#memory,
+#custom-storage,
+#network,
+#wireplumber,
+#battery,
+#tray,
+#backlight,
+#workspaces,
+#clock,
+#cpu,
+#custom-spotify,
+#mode {
+    padding: 2 10 2 8px;
+    background-color: @bg-module;
+    border-radius: 14px;
+    /* border: 2px solid @border-module; */
+    color: @fg-module;
+}
+
+#tray {
+    background-color: @bg-tray;
+}
+
+#custom-logo {
+    color: @foreground;
+}
+
+#battery {}
+
+#battery icon {
+    color: red;
+}
+
+#battery.plugged {
+    color: @foreground;
+    animation-name: blink;
+    animation-duration: 1.5s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+}
+
+#battery.charging {
+    color: @foreground;
+    animation-name: blink;
+    animation-duration: 1.0s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+}
+
+@keyframes blink {
+    to {
+        color: @fg-blink;
+    }
+}
+
+#battery.warning:not(.charging) {
+    animation-name: blink;
+    animation-duration: 0.5s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+}
+
+#cpu {}
+
+#memory {}
+
+#network {}
+
+#network.disconnected {}
+
+#idle_inhibitor {
+    color: @foreground;
+    padding: 2 4 2 8px;
+}
+
+#idle_inhibitor.activated {
+    color: @fg-module;
+}
+
+#pulseaudio {}
+
+#pulseaudio.muted {}
+
+#custom-spotify {}
+
+#custom-seperator {
+    color: @separator;
+}
+
+#tray {
+    padding: 3;
+}
