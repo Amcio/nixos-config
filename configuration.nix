@@ -157,7 +157,7 @@
   environment.shells = with pkgs; [ zsh ];
   environment.pathsToLink = [ "/share/zsh" ]; # Completion for system packages?
 
-  environment.variables.EDITOR = "neovim";
+  environment.variables.EDITOR = "nvim";
   # Enable Ozone Wayland
   environment.sessionVariables.NIXOS_OZONE_WL = "1";
   # Enable VAAPI
