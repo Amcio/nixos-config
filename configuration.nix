@@ -45,12 +45,22 @@
 
   networking.hostName = "thor"; # Define your hostname.
   # Pick only one of the below networking options.
-  # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
   networking.networkmanager.enable = true;  # Easiest to use and most distros use this by default.
   # Allow for connecting to ancient eduroam APs. *angery*
+  networking.wireless.enable = false;  # Enables wireless support via wpa_supplicant.
   networking.wireless.extraConfig = ''
   openssl_ciphers=DEFAULT@SECLEVEL=0
 '';
+  networking.wireless.networks.eduroam = {
+    auth = ''
+    	key_mgmt=WPA-EAP
+	eap=PEAP
+	proto=WPA2
+	phase2="auth=MSCHAPV2"
+	password=""
+	identity=""
+	'';
+  };
 
   # Set your time zone.
   time.timeZone = "Europe/Warsaw";
