@@ -33,6 +33,7 @@ in
 
     # gaming
     melonDS
+    wineWowPackages.waylandFull
 
     # archives
     zip

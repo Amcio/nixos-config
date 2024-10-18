@@ -1,16 +1,19 @@
 # Edit this configuration file to define what should be installed on
 # your system. Help is available in the configuration.nix(5) man page, on
 # https://search.nixos.org/options and in the NixOS manual (`nixos-help`).
-
-{ config, lib, pkgs, inputs, ... }:
-
 {
-  imports =
-    [ # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-    ];
+  config,
+  lib,
+  pkgs,
+  inputs,
+  ...
+}: {
+  imports = [
+    # Include the results of the hardware scan.
+    ./hardware-configuration.nix
+  ];
 
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  nix.settings.experimental-features = ["nix-command" "flakes"];
   nix.settings.auto-optimise-store = true;
 
   nix.gc = {
@@ -22,14 +25,13 @@
   nixpkgs.config.allowUnfree = true;
   services.fwupd.enable = true;
 
-  hardware.firmware = with pkgs; [
-    (sof-firmware.overrideAttrs (finalAttrs: previousAttrs: {
-	version = "2024.06";
-        src = fetchurl {
-          url = "https://github.com/thesofproject/sof-bin/releases/download/v${finalAttrs.version}/sof-bin-${finalAttrs.version}.tar.gz";
-          sha256 = "sha256-WByjKFu1aDeolUlT9inr3c5kQVK2c+zUu/rhUEMG19Y=";
-        };
-    }))
+  hardware.firmware = let
+    unstable-pkgs = import inputs.nix-unstable {
+      system = pkgs.system;
+      config.allowUnfree = true;
+    };
+  in [
+    unstable-pkgs.sof-firmware
   ];
 
   # Use the systemd-boot EFI boot loader.
@@ -45,26 +47,26 @@
 
   networking.hostName = "thor"; # Define your hostname.
   # Pick only one of the below networking options.
-  networking.networkmanager.enable = true;  # Easiest to use and most distros use this by default.
+  networking.networkmanager.enable = true; # Easiest to use and most distros use this by default.
   # Allow for connecting to ancient eduroam APs. *angery*
-  networking.wireless.enable = false;  # Enables wireless support via wpa_supplicant.
+  networking.wireless.enable = false; # Enables wireless support via wpa_supplicant.
   networking.wireless.extraConfig = ''
-  openssl_ciphers=DEFAULT@SECLEVEL=0
-'';
+    openssl_ciphers=DEFAULT@SECLEVEL=0
+  '';
   networking.wireless.networks.eduroam = {
     auth = ''
-    	key_mgmt=WPA-EAP
-	eap=PEAP
-	proto=WPA2
-	phase2="auth=MSCHAPV2"
-	password=""
-	identity=""
-	'';
+         	key_mgmt=WPA-EAP
+      eap=PEAP
+      proto=WPA2
+      phase2="auth=MSCHAPV2"
+      password=""
+      identity=""
+    '';
   };
 
   # Set your time zone.
   time.timeZone = "Europe/Warsaw";
-  
+
   # Select internationalisation properties.
   i18n.defaultLocale = "en_GB.UTF-8";
   # console = {
@@ -75,7 +77,6 @@
 
   # Enable the X11 windowing system.
   services.xserver.enable = true;
-
 
   # Enable the GNOME Desktop Environment.
   services.xserver.displayManager.gdm.enable = true;
@@ -122,7 +123,7 @@
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.amcio = {
     isNormalUser = true;
-    extraGroups = [ "wheel" "networkmanager" "input" "gamemode" ]; # Enable ‘sudo’ for the user.
+    extraGroups = ["wheel" "networkmanager" "input" "gamemode"]; # Enable ‘sudo’ for the user.
     openssh.authorizedKeys.keys = [
       "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCv26kRwZ/KGVYw0sBdfKsp/pdrjTZ1wW0BdD7TirnL9AJKyAplRT9zmgHHWINPeoGX1nY1Z1QM2zdAjB53KTBUsfVgyKM0cKmzwBRPuQ5spl5d0ySYhFmlIMumVwfflk0cCF8sj9j6U/UllMX+4ZPtEyt5/i1C8lFT9xioO0yIfqSyvWLJ7TCsqsiDPxJrE9qb44Mm5XaEFFheRJS5c7ZQTp2IvFiZ/DpbcW6pMmvtc+Ig/F87TMgzkaXXdSG04UsfYAXiuTS7J3SmqYr9nDonHt5b7CXSho6IY3dcPiIERuIsp5NoHACb6byeA3taKZBN1wtOPywh2a8+/NiHYwTF/jp5DfTsEmQSeEt4hOqN8jxtvKMSjmY0OJ7Zn4xFIgeD18uvzmu3zparHdLFw2eZgoQugFFdKn9uoRyO0Y8PbhzHA2Jb13eK1sG7Xq2ZYFwyodoqxH+EHP3fEpzNHNJXdA90BXirGkJdje1d5sinGj2ZsoMbmmO3vE7mb5NYZz9UKuGvzfLs9We2rgNSaGT97aYqZUntXEAx+/5qPqxfCVEQTZHiHJYkHjTDATwPSPX3InqHc7UHpZKj+LOPMy9acNen6Lv6RwjXIQniI/ZYvJdF9KCF6mgTqp8KRM1XA8tD3VhUP38OaFgfhS4gNKajnrOYQMuJs67EX++CEw1i0Q== amcio"
     ];
@@ -134,14 +135,15 @@
 
   # Fonts
   fonts.packages = with pkgs; [
-    (nerdfonts.override { fonts = [
-    "IBMPlexMono"
-    "JetBrainsMono"
-    "Iosevka"
-    ]; })
+    (nerdfonts.override {
+      fonts = [
+        "IBMPlexMono"
+        "JetBrainsMono"
+        "Iosevka"
+      ];
+    })
     icomoon-feather
   ];
-
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
@@ -152,10 +154,11 @@
     pciutils # lspci
     usbutils # lsusb
     polkit_gnome
+    sshfs
   ];
 
-  environment.shells = with pkgs; [ zsh ];
-  environment.pathsToLink = [ "/share/zsh" ]; # Completion for system packages?
+  environment.shells = with pkgs; [zsh];
+  environment.pathsToLink = ["/share/zsh"]; # Completion for system packages?
 
   environment.variables.EDITOR = "nvim";
   # Enable Ozone Wayland
@@ -171,7 +174,13 @@
   #   enableSSHSupport = true;
   # };
 
-  programs.neovim = {
+  programs.neovim = let
+    unstable-pkgs = import inputs.nix-unstable {
+      system = pkgs.system;
+      config.allowUnfree = true;
+    };
+  in {
+    package = unstable-pkgs.neovim-unwrapped;
     enable = true;
     vimAlias = true;
   };
@@ -234,6 +243,4 @@
   #
   # For more information, see `man configuration.nix` or https://nixos.org/manual/nixos/stable/options#opt-system.stateVersion .
   system.stateVersion = "24.05"; # Did you read the comment?
-
 }
-
