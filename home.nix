@@ -1,21 +1,21 @@
-{ inputs, config, pkgs, ... }:
-
-let
-  wlprop = pkgs.callPackage ./wlprop {};
-in
 {
+  inputs,
+  config,
+  pkgs,
+  ...
+}: let
+  wlprop = pkgs.callPackage ./wlprop {};
+in {
   home.username = "amcio";
   home.homeDirectory = "/home/amcio";
 
   imports = [
-    ./waybar
-    ./wofi
-    ./spicetify.nix
+    #./wofi # Replaced with rofi
+    ./software
   ];
 
   home.packages = with pkgs; [
-
-#    spotify
+    #    spotify # Replaced with spicetify
     libreoffice
     quodlibet # Audio Player
     mpv
@@ -72,10 +72,9 @@ in
     brightnessctl
     blueman
     wl-clipboard
-    wofi  # TODO: Remove
     rofi-wayland
     networkmanagerapplet
-    gammastep  
+    gammastep
     wlogout
     hyprshot
     hyprlock
@@ -89,12 +88,11 @@ in
     enable = true;
     userName = "Amcio";
     userEmail = "amcio122@gmail.com";
-    extraConfig = 
-      { 
-        init = {
-	  defaultBranch = "main";  
-        };
+    extraConfig = {
+      init = {
+        defaultBranch = "main";
       };
+    };
   };
 
   programs.zathura.enable = true;
@@ -126,7 +124,7 @@ in
       rebuild = "nixos-rebuild switch --show-trace --use-remote-sudo";
     };
 
-    # plugins = []; 
+    # plugins = [];
 
     oh-my-zsh = {
       enable = true;
@@ -138,8 +136,6 @@ in
     enable = true;
     # settings = {};
   };
-
-
 
   # Apparently has no effect, perhaps this should be "override"?
   nixpkgs.config.element-web.conf = {
@@ -158,19 +154,19 @@ in
 
     theme = {
       # package = (pkgs.orchis-theme.override { tweaks = [  ]; });
-      package = (pkgs.tokyonight-gtk-theme.overrideAttrs (finalAttrs: previousAttrs: {
+      package = pkgs.tokyonight-gtk-theme.overrideAttrs (finalAttrs: previousAttrs: {
         version = "unstable-2024-08-05";
-	src = pkgs.fetchFromGitHub {
-	  owner = "Fausto-Korpsvart";
-	  repo = "Tokyo-Night-GTK-Theme";
-	  rev = "a9a25010e9fbfca783c3c27258dbad76a9cc7842";
-	  hash = "sha256-HbrDDiMej4DjvskGItele/iCUY1NzlWlu3ZneA76feM=";
+        src = pkgs.fetchFromGitHub {
+          owner = "Fausto-Korpsvart";
+          repo = "Tokyo-Night-GTK-Theme";
+          rev = "a9a25010e9fbfca783c3c27258dbad76a9cc7842";
+          hash = "sha256-HbrDDiMej4DjvskGItele/iCUY1NzlWlu3ZneA76feM=";
         };
-      }));
+      });
       name = "Tokyonight-Dark-B";
     };
     iconTheme = {
-      package = (pkgs.catppuccin-papirus-folders.override { accent = "sapphire"; });
+      package = pkgs.catppuccin-papirus-folders.override {accent = "sapphire";};
       name = "Papirus-Dark";
     };
     # Fix so it uses the x theme
@@ -206,32 +202,31 @@ in
   systemd.user.services.rclone-nc-mount = {
     Unit = {
       Description = "Service that connects to Nextcloud";
-      After = [ "network-online.target" ];
-      Requires = [ "network-online.target" ];
+      After = ["network-online.target"];
+      Requires = ["network-online.target"];
     };
     Install = {
-      WantedBy = [ "default.target" ];
+      WantedBy = ["default.target"];
     };
-    
+
     Service = let
       gdriveDir = "/home/amcio/Documents/Nextcloud";
-      in
-      {
-        Type = "simple";
-        ExecStartPre = "/run/current-system/sw/bin/mkdir -p ${gdriveDir}";
-        ExecStart = "${pkgs.rclone}/bin/rclone mount --vfs-cache-mode full nextcloud: ${gdriveDir}";
-        ExecStop = "/run/current-system/sw/bin/fusermount -u ${gdriveDir}";
-        Restart = "on-failure";
-        RestartSec = "10s";
-        Environment = [ "PATH=/run/wrappers/bin/:$PATH" ];
-      };
+    in {
+      Type = "simple";
+      ExecStartPre = "/run/current-system/sw/bin/mkdir -p ${gdriveDir}";
+      ExecStart = "${pkgs.rclone}/bin/rclone mount --vfs-cache-mode full nextcloud: ${gdriveDir}";
+      ExecStop = "/run/current-system/sw/bin/fusermount -u ${gdriveDir}";
+      Restart = "on-failure";
+      RestartSec = "10s";
+      Environment = ["PATH=/run/wrappers/bin/:$PATH"];
     };
+  };
 
   systemd.user.services.polkit-authentication-agent-1 = {
     Unit = {
       Description = "polkit-gnome-authentication-agent-1";
-      Wants = [ "graphical-session.target" ];
-      After = [ "graphical-session.target" ];
+      Wants = ["graphical-session.target"];
+      After = ["graphical-session.target"];
     };
     Service = {
       Type = "simple";
@@ -241,7 +236,7 @@ in
       TimeoutStopSec = 10;
     };
     Install = {
-      WantedBy = [ "graphical-session.target" ];
+      WantedBy = ["graphical-session.target"];
     };
   };
 
