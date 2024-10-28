@@ -4,5 +4,6 @@
     ./spicetify.nix
     ./waybar
     ./hyprland
+    ./direnv.nix
   ];
 }

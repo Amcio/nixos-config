@@ -105,6 +105,7 @@
 
   # Enable CUPS to print documents.
   services.printing.enable = true;
+  services.printing.drivers = [ pkgs.hplip ];
 
   # Enable sound.
   hardware.pulseaudio.enable = false;
@@ -191,6 +192,7 @@
   };
 
   programs.zsh.enable = true;
+  virtualisation.vmware.host.enable = false;
 
   # List services that you want to enable:
 
