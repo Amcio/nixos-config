@@ -157,15 +157,15 @@ in {
     theme = {
       # package = (pkgs.orchis-theme.override { tweaks = [  ]; });
       package = pkgs.tokyonight-gtk-theme.overrideAttrs (finalAttrs: previousAttrs: {
-        version = "unstable-2024-08-05";
+        version = "unstable-2024-11-06";
         src = pkgs.fetchFromGitHub {
           owner = "Fausto-Korpsvart";
           repo = "Tokyo-Night-GTK-Theme";
-          rev = "a9a25010e9fbfca783c3c27258dbad76a9cc7842";
-          hash = "sha256-HbrDDiMej4DjvskGItele/iCUY1NzlWlu3ZneA76feM=";
+          rev = "4dc45d60bf35f50ebd9ee41f16ab63783f80dd64";
+          hash = "sha256-AKZA+WCcfxDeNrNrq3XYw+SFoWd1VV2T9+CwK2y6+jA=";
         };
       });
-      name = "Tokyonight-Dark-B";
+      name = "Tokyonight-Dark";
     };
     iconTheme = {
       package = pkgs.catppuccin-papirus-folders.override {accent = "sapphire";};

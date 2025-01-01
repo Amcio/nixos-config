@@ -2,11 +2,11 @@
   description = "NixOS System flake";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.05";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.11";
     nix-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     # home-manager
     home-manager = {
-      url = "github:nix-community/home-manager/release-24.05";
+      url = "github:nix-community/home-manager/release-24.11";
       # Same version of nixpkgs as for the whole flake.
       inputs.nixpkgs.follows = "nixpkgs";
     };
@@ -19,7 +19,6 @@
     mcmojave-hyprcursor.url = "github:libadoxon/mcmojave-hyprcursor";
     rofi-obsidian = {
       url = "github:Nydragon/rofi-obsidian";
-      inputs.nixpkgs.follows = "nixpkgs";
     };
   };
 
