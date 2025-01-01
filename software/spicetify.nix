@@ -13,6 +13,7 @@
    in
    {
      enable = true;
+     spicetifyPackage = inputs.nix-unstable.legacyPackages.${pkgs.system}.spicetify-cli;
      enabledExtensions = with spicePkgs.extensions; [
        # shuffle # shuffle+ (special characters are sanitized out of extension names)
        keyboardShortcut

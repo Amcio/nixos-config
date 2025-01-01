@@ -82,6 +82,8 @@
   services.xserver.displayManager.gdm.enable = true;
   services.xserver.desktopManager.gnome.enable = true;
 
+  programs.firefox.enable = true;
+
   # Enable hyprland
   programs.hyprland.enable = true;
 
@@ -129,7 +131,7 @@
       "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCv26kRwZ/KGVYw0sBdfKsp/pdrjTZ1wW0BdD7TirnL9AJKyAplRT9zmgHHWINPeoGX1nY1Z1QM2zdAjB53KTBUsfVgyKM0cKmzwBRPuQ5spl5d0ySYhFmlIMumVwfflk0cCF8sj9j6U/UllMX+4ZPtEyt5/i1C8lFT9xioO0yIfqSyvWLJ7TCsqsiDPxJrE9qb44Mm5XaEFFheRJS5c7ZQTp2IvFiZ/DpbcW6pMmvtc+Ig/F87TMgzkaXXdSG04UsfYAXiuTS7J3SmqYr9nDonHt5b7CXSho6IY3dcPiIERuIsp5NoHACb6byeA3taKZBN1wtOPywh2a8+/NiHYwTF/jp5DfTsEmQSeEt4hOqN8jxtvKMSjmY0OJ7Zn4xFIgeD18uvzmu3zparHdLFw2eZgoQugFFdKn9uoRyO0Y8PbhzHA2Jb13eK1sG7Xq2ZYFwyodoqxH+EHP3fEpzNHNJXdA90BXirGkJdje1d5sinGj2ZsoMbmmO3vE7mb5NYZz9UKuGvzfLs9We2rgNSaGT97aYqZUntXEAx+/5qPqxfCVEQTZHiHJYkHjTDATwPSPX3InqHc7UHpZKj+LOPMy9acNen6Lv6RwjXIQniI/ZYvJdF9KCF6mgTqp8KRM1XA8tD3VhUP38OaFgfhS4gNKajnrOYQMuJs67EX++CEw1i0Q== amcio"
     ];
     packages = with pkgs; [
-      firefox
+      # Moved to home-manager
     ];
     shell = pkgs.zsh;
   };

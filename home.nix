@@ -31,6 +31,8 @@ in {
     })
     remmina # RDP connections
 
+    eduvpn-client
+
     # gaming
     melonDS
     wineWowPackages.waylandFull
