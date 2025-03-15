@@ -17,6 +17,7 @@ in {
   home.packages = with pkgs; [
     #    spotify # Replaced with spicetify
     libreoffice
+    anki-bin
     quodlibet # Audio Player
     mpv
     obsidian
@@ -67,6 +68,7 @@ in {
     lm_sensors
     ethtool
     procps
+    ipafont
 
     # hyprland
     swaynotificationcenter

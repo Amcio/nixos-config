@@ -19,11 +19,16 @@
   nix.gc = {
     automatic = true;
     dates = "weekly";
-    options = "--delete-older-than 2w";
+    options = "--delete-older-than 14d";
   };
 
   nixpkgs.config.allowUnfree = true;
   services.fwupd.enable = true;
+
+  hardware.ipu6 = {
+    enable = true;
+    platform = "ipu6ep";
+  };
 
   hardware.firmware = let
     unstable-pkgs = import inputs.nix-unstable {
@@ -158,6 +163,7 @@
     usbutils # lsusb
     polkit_gnome
     sshfs
+    nh
   ];
 
   environment.shells = with pkgs; [zsh];
