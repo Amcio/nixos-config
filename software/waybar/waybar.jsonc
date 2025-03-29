@@ -22,7 +22,7 @@
         "custom/spotify"
     ],
     "modules-center": [
-        "hyprland/window",
+        "hyprland/window"
     ],
     "modules-right": [
         // "custom/update",
@@ -157,7 +157,7 @@
         ],
         "tooltip-format": "{volume}%",
         "on-click": "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle",
-	"on-click-right": "pavucontrol"
+        "on-click-right": "pavucontrol"
     },
     "pulseaudio": {
         "scroll-step": 5, // %, can be a float

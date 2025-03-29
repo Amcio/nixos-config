@@ -2,7 +2,7 @@
   imports = [
     ./nnn.nix
     ./spicetify.nix
-    ./waybar
+    ./waybar2
     ./hyprland
     ./direnv.nix
   ];

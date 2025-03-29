@@ -44,7 +44,23 @@
   boot.loader.systemd-boot.configurationLimit = 11;
   boot.loader.efi.canTouchEfiVariables = true;
 
-  boot.kernelPackages = pkgs.linuxPackages_latest;
+  #boot.kernelPackages = pkgs.linuxPackages_latest;
+  boot.kernelPackages = pkgs.linuxPackages_latest.extend ( self: super: {
+    ipu6-drivers = super.ipu6-drivers.overrideAttrs (
+        final: previous: rec {
+          src = builtins.fetchGit {
+            url = "https://github.com/intel/ipu6-drivers.git";
+            ref = "master";
+            #rev = "b4ba63df5922150ec14ef7f202b3589896e0301a";
+	    rev = "c09e2198d801e1eb701984d2948373123ba92a56";
+          };
+          patches = [
+            "${src}/patches/0001-v6.10-IPU6-headers-used-by-PSYS.patch"
+          ] ;
+        }
+    );
+  } );
+
   boot.kernelParams = [
     "i915.force_probe=!46a8"
     "xe.force_probe=46a8"

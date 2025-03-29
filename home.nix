@@ -47,6 +47,8 @@ in {
 
     # utils
     pavucontrol
+    playerctl
+    killall
     ripgrep
     jq
     pdftk
