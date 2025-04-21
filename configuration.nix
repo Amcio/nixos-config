@@ -15,6 +15,17 @@
 
   nix.settings.experimental-features = ["nix-command" "flakes"];
   nix.settings.auto-optimise-store = true;
+  nix = {
+    settings = {
+      substitute = true;
+      substituters = [
+        "https://yazi.cachix.org"
+      ];
+      trusted-public-keys = [
+        "yazi.cachix.org-1:Dcdz63NZKfvUCbDGngQDAZq6kOroIrFoyO064uvLh8k="
+      ];
+    };
+  };
 
   nix.gc = {
     automatic = true;
@@ -36,7 +47,7 @@
       config.allowUnfree = true;
     };
   in [
-    unstable-pkgs.sof-firmware
+    unstable-pkgs.sof-firmware # Audio firmware
   ];
 
   # Use the systemd-boot EFI boot loader.
@@ -45,21 +56,21 @@
   boot.loader.efi.canTouchEfiVariables = true;
 
   #boot.kernelPackages = pkgs.linuxPackages_latest;
-  boot.kernelPackages = pkgs.linuxPackages_latest.extend ( self: super: {
+  boot.kernelPackages = pkgs.linuxPackages_latest.extend (self: super: {
     ipu6-drivers = super.ipu6-drivers.overrideAttrs (
-        final: previous: rec {
-          src = builtins.fetchGit {
-            url = "https://github.com/intel/ipu6-drivers.git";
-            ref = "master";
-            #rev = "b4ba63df5922150ec14ef7f202b3589896e0301a";
-	    rev = "c09e2198d801e1eb701984d2948373123ba92a56";
-          };
-          patches = [
-            "${src}/patches/0001-v6.10-IPU6-headers-used-by-PSYS.patch"
-          ] ;
-        }
+      final: previous: rec {
+        src = builtins.fetchGit {
+          url = "https://github.com/intel/ipu6-drivers.git";
+          ref = "master";
+          #rev = "b4ba63df5922150ec14ef7f202b3589896e0301a";
+          rev = "c09e2198d801e1eb701984d2948373123ba92a56";
+        };
+        patches = [
+          "${src}/patches/0001-v6.10-IPU6-headers-used-by-PSYS.patch"
+        ];
+      }
     );
-  } );
+  });
 
   boot.kernelParams = [
     "i915.force_probe=!46a8"
@@ -74,16 +85,6 @@
   networking.wireless.extraConfig = ''
     openssl_ciphers=DEFAULT@SECLEVEL=0
   '';
-  networking.wireless.networks.eduroam = {
-    auth = ''
-         	key_mgmt=WPA-EAP
-      eap=PEAP
-      proto=WPA2
-      phase2="auth=MSCHAPV2"
-      password=""
-      identity=""
-    '';
-  };
 
   # Set your time zone.
   time.timeZone = "Europe/Warsaw";
@@ -102,6 +103,18 @@
   # Enable the GNOME Desktop Environment.
   services.xserver.displayManager.gdm.enable = true;
   services.xserver.desktopManager.gnome.enable = true;
+
+  # Enable KDE
+  # services.displayManager.sddm = {
+  #   enable = true;
+  #   wayland.enable = true;
+  # };
+  # services.desktopManager.plasma6.enable = true;
+  # environment.plasma6.excludePackages = with pkgs.kdePackages; [
+  #   konsole
+  #   oxygen
+  # ];
+  hardware.bluetooth.enable = true;
 
   programs.firefox.enable = true;
 
@@ -128,12 +141,11 @@
 
   # Enable CUPS to print documents.
   services.printing.enable = true;
-  services.printing.drivers = [ pkgs.hplip ];
+  services.printing.drivers = [pkgs.hplip];
 
   # Enable sound.
   hardware.pulseaudio.enable = false;
   # OR
-  #sound.enable = true;
   services.pipewire = {
     enable = true;
     pulse.enable = true;
@@ -236,6 +248,7 @@
   services.avahi = {
     enable = true;
     nssmdns4 = true;
+    nssmdns6 = true;
   };
 
   security.rtkit.enable = true;

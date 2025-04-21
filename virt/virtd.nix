@@ -1,9 +1,10 @@
-{ config, pkgs, ... }:
-
 {
-
+  config,
+  pkgs,
+  ...
+}: {
   users.users.amcio = {
-    extraGroups = [ "libvirtd" ];
+    extraGroups = ["libvirtd"];
   };
 
   # Should already be enabled but let's be safe
@@ -14,13 +15,16 @@
       enable = true;
       qemu = {
         package = pkgs.qemu_kvm;
-	swtpm.enable = true;
-	ovmf.enable = true;
-	# possibly switch to OVMFFull (space savings?)
-	ovmf.packages = [(pkgs.OVMF.override {
-          secureBoot = true;
-	  tpmSupport = true;
-	}).fd];
+        swtpm.enable = true;
+        ovmf.enable = true;
+        # possibly switch to OVMFFull (space savings?)
+        ovmf.packages = [
+          (pkgs.OVMF.override {
+            secureBoot = true;
+            tpmSupport = true;
+          })
+          .fd
+        ];
       };
     };
     # Note that this allows users arbitrary access to USB devices.
@@ -46,5 +50,4 @@
       uris = ["qemu:///system"];
     };
   };
-
 }

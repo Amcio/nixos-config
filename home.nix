@@ -17,6 +17,7 @@ in {
   home.packages = with pkgs; [
     #    spotify # Replaced with spicetify
     libreoffice
+    thunderbird-latest
     anki-bin
     quodlibet # Audio Player
     mpv
@@ -46,6 +47,8 @@ in {
     zstd
 
     # utils
+    sops
+    gnupg
     pavucontrol
     playerctl
     killall
@@ -155,9 +158,13 @@ in {
     };
   };
 
+  qt = {
+    enable = true;
+    platformTheme.name = "qtct";
+    style.name = "kvantum";
+  };
   gtk = {
     enable = true;
-
     theme = {
       # package = (pkgs.orchis-theme.override { tweaks = [  ]; });
       package = pkgs.tokyonight-gtk-theme.overrideAttrs (finalAttrs: previousAttrs: {

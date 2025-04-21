@@ -20,23 +20,34 @@
     rofi-obsidian = {
       url = "github:Nydragon/rofi-obsidian";
     };
+    sops-nix = {
+      url = "github:Mic92/sops-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs = inputs@{ nixpkgs, home-manager, swww, rofi-obsidian, ... }: {
+  outputs = inputs @ {
+    nixpkgs,
+    home-manager,
+    swww,
+    sops-nix,
+    ...
+  }: {
     nixosConfigurations.thor = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
-      specialArgs = { inherit inputs; };
+      specialArgs = {inherit inputs;};
       modules = [
         ./configuration.nix
-	./virt
-	# Make home-manager a NixOS module
-	home-manager.nixosModules.home-manager
-	{
+        ./virt
+        sops-nix.nixosModules.sops
+        # Make home-manager a NixOS module
+        home-manager.nixosModules.home-manager
+        {
           home-manager.useGlobalPkgs = true;
-	  home-manager.useUserPackages = true;
-	  home-manager.users.amcio = import ./home.nix;
-	  home-manager.extraSpecialArgs = { inherit inputs; };
-	}
+          home-manager.useUserPackages = true;
+          home-manager.users.amcio = import ./home.nix;
+          home-manager.extraSpecialArgs = {inherit inputs;};
+        }
       ];
     };
   };
