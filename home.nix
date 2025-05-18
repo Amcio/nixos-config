@@ -16,6 +16,8 @@ in {
 
   home.packages = with pkgs; [
     #    spotify # Replaced with spicetify
+    zellij
+    distrobox
     libreoffice
     thunderbird-latest
     anki-bin
@@ -27,6 +29,9 @@ in {
     prismlauncher
     vesktop
     inputs.swww.packages.${pkgs.system}.swww
+    inputs.yazi.packages.${pkgs.system}.default
+    xfce.thunar # Fuck nautilus theming
+    # xfce.thunar-volman
     (vivaldi.override {
       proprietaryCodecs = true;
       enableWidevine = true;
