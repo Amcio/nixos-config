@@ -2,11 +2,11 @@
   description = "NixOS System flake";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.11";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.05";
     nix-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     # home-manager
     home-manager = {
-      url = "github:nix-community/home-manager/release-24.11";
+      url = "github:nix-community/home-manager/release-25.05";
       # Same version of nixpkgs as for the whole flake.
       inputs.nixpkgs.follows = "nixpkgs";
     };

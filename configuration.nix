@@ -63,7 +63,7 @@
           url = "https://github.com/intel/ipu6-drivers.git";
           ref = "master";
           #rev = "b4ba63df5922150ec14ef7f202b3589896e0301a";
-          rev = "c09e2198d801e1eb701984d2948373123ba92a56";
+          rev = "9bff73689ea2502f6e3bc34769fd699cde3ffeea";
         };
         patches = [
           "${src}/patches/0001-v6.10-IPU6-headers-used-by-PSYS.patch"
@@ -144,7 +144,7 @@
   services.printing.drivers = [pkgs.hplip];
 
   # Enable sound.
-  hardware.pulseaudio.enable = false;
+  services.pulseaudio.enable = false;
   # OR
   services.pipewire = {
     enable = true;
@@ -171,13 +171,9 @@
 
   # Fonts
   fonts.packages = with pkgs; [
-    (nerdfonts.override {
-      fonts = [
-        "IBMPlexMono"
-        "JetBrainsMono"
-        "Iosevka"
-      ];
-    })
+    pkgs.nerd-fonts.jetbrains-mono
+    pkgs.nerd-fonts.blex-mono
+    pkgs.nerd-fonts.iosevka
     icomoon-feather
   ];
 

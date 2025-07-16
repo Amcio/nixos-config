@@ -209,6 +209,7 @@ in {
   home.sessionVariables.XCURSOR_SIZE = 28;
 
   home.sessionVariables.GTK_THEME = "Tokyonight-Dark-B";
+  home.sessionVariables.ELECTRON_OZONE_PLATFORM_HINT = "wayland";
 
   home.sessionVariables.TERMINAL = "kitty";
 
