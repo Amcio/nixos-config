@@ -33,6 +33,7 @@ in {
     xfce.thunar # Fuck nautilus theming
     # xfce.thunar-volman
     (vivaldi.override {
+      commandLineArgs = [ "--enable-features=UseOzonePlatform,WaylandWindowDecorations" "--ozone-platform=wayland" "--ozone-platform-hint=auto" ];
       proprietaryCodecs = true;
       enableWidevine = true;
     })
