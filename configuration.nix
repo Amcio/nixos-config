@@ -55,22 +55,23 @@
   boot.loader.systemd-boot.configurationLimit = 11;
   boot.loader.efi.canTouchEfiVariables = true;
 
-  #boot.kernelPackages = pkgs.linuxPackages_latest;
-  boot.kernelPackages = pkgs.linuxPackages_latest.extend (self: super: {
-    ipu6-drivers = super.ipu6-drivers.overrideAttrs (
-      final: previous: rec {
-        src = builtins.fetchGit {
-          url = "https://github.com/intel/ipu6-drivers.git";
-          ref = "master";
-          #rev = "b4ba63df5922150ec14ef7f202b3589896e0301a";
-          rev = "9bff73689ea2502f6e3bc34769fd699cde3ffeea";
-        };
-        patches = [
-          "${src}/patches/0001-v6.10-IPU6-headers-used-by-PSYS.patch"
-        ];
-      }
-    );
-  });
+  boot.kernelPackages = pkgs.linuxPackages_latest;
+  # The new driver is not ready.
+  # boot.kernelPackages = pkgs.linuxPackages_latest.extend (self: super: {
+  #   ipu6-drivers = super.ipu6-drivers.overrideAttrs (
+  #     final: previous: rec {
+  #       src = builtins.fetchGit {
+  #         url = "https://github.com/intel/ipu6-drivers.git";
+  #         ref = "master";
+  #         #rev = "b4ba63df5922150ec14ef7f202b3589896e0301a";
+  #         rev = "9bff73689ea2502f6e3bc34769fd699cde3ffeea";
+  #       };
+  #       patches = [
+  #         "${src}/patches/0001-v6.10-IPU6-headers-used-by-PSYS.patch"
+  #       ];
+  #     }
+  #   );
+  # });
 
   boot.kernelParams = [
     "i915.force_probe=!46a8"
@@ -247,6 +248,10 @@
     nssmdns6 = true;
   };
 
+  services.tailscale = {
+    enable = true;
+    useRoutingFeatures = "client";
+  };
   security.rtkit.enable = true;
 
   # Open ports in the firewall.
